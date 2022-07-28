@@ -1,6 +1,3 @@
-# Document ID
+# Document Metadata ID
 
-A web application that lets you upload a PDF file and share it. Each 
-downloaded PDF file will contain an invisible watermark with metadata in 
-it that identifies who the person who downloaded the PDF is. You may also 
-upload a document to view the watermark metadata that may exist on it.
+A web application and standalone API that lets you upload a PDF file and share it with others. Each downloaded PDF file will contain an invisible bit of metadata watermarked into the document that identifies who the person that downloaded the PDF is. You may also upload a PDF to view the invisible metadata that may exist on it.
