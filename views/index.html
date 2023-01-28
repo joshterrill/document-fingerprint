@@ -1,48 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <script>
-        async function decode() {
-            const file = document.querySelector(".encodedFile");
-            const formData = new FormData();
-            formData.append("file", file.files[0]);
-            const res = await fetch("/decode", {
-                method: "POST",
-                body: formData
-            });
-            const json = await res.text();
-            const decodedText = document.querySelector(".decoded-text");
-            decodedText.style.display = "block";
-            decodedText.innerText = json;
-        }
-        async function encode() {
-            const file = document.querySelector(".originalFile");
-            const message = document.querySelector(".message");
-            const formData = new FormData();
-            formData.append("file", file.files[0]);
-            formData.append("message", message.value);
-            const res = await fetch("/upload", {
-                method: "POST",
-                body: formData
-            });
-            const blob = await res.blob();
-            downloadFile(blob, file.files[0].name);
-        }
-
-        function downloadFile(blob, name) {
-            var blob = new Blob([blob], { type: "application/octet-stream" });
-            const href = URL.createObjectURL(blob);
-            const a = Object.assign(document.createElement("a"), {
-                href,
-                style: "display:none",
-                download: name,
-            });
-            document.body.appendChild(a);
-            a.click();
-            URL.revokeObjectURL(href);
-            a.remove();
-        }
-    </script>
+    <script src="scripts.js"></script>
     <style>
         .decoded-text {
             display: none;
@@ -56,8 +15,8 @@
 </head>
 
 <body>
-    <h1>Document ID v0.1</h1>
-    <p><small>Only works for PDF's for now</small></p>
+    <h1>Document ID v0.1 Encoder/Decoder</h1>
+    <p><small>Only works for PDF's for now. Click <a href="/demo">here</a> to view demo</small></p>
     <h3>Encode File</h3>
     <input class="originalFile" type="file"> <br /><br />
     <textarea class="message" placeholder="Type message here" cols="40" rows="8"></textarea><br /><br />

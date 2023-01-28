@@ -1,5 +1,4 @@
 ﻿require('dotenv').config();
-const fs = require('fs');
 const crypto = require('crypto');
 const CONSTANTS = require('./constants');
 
@@ -29,7 +28,12 @@ function decryptText(encryptedMessage) {
 
 function addIDToFile(file, message) {
     // const file = fs.readFileSync('file.pdf', { encoding: 'hex' });
-    const fileBuffer = file.data.toString('hex');
+    let fileBuffer;
+    if (file && typeof file.data === 'undefined') {
+        fileBuffer = file;
+    } else {
+        fileBuffer = file.data.toString('hex');
+    }
     const eofIndex = fileBuffer.indexOf(CONSTANTS.EOF);
     const endObjIndex = fileBuffer.lastIndexOf(CONSTANTS.END_OBJ, eofIndex) + CONSTANTS.END_OBJ.length;
     const insertedText = utf8ToHex(message);
@@ -49,8 +53,6 @@ function readIDFromFile(file) {
     return decoded;
 }
 
-// addIDToFile();
-// readIDFromFile();
 module.exports = {
     addIDToFile,
     readIDFromFile,

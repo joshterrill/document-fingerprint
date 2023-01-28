@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="./scripts.js"></script>
+    <script>
+        async function decode() {
+    const file = document.querySelector(".encodedFile");
+    const formData = new FormData();
+    formData.append("file", file.files[0]);
+    const res = await fetch("/v0.0.1/decode", {
+        method: "POST",
+        body: formData
+    });
+    const json = await res.text();
+    const decodedText = document.querySelector(".decoded-text");
+    decodedText.style.display = "block";
+    decodedText.innerText = json;
+}
+async function encode() {
+    const file = document.querySelector(".originalFile");
+    const message = document.querySelector(".message");
+    const formData = new FormData();
+    formData.append("file", file.files[0]);
+    formData.append("message", message.value);
+    const res = await fetch("/v0.0.1/upload", {
+        method: "POST",
+        body: formData
+    });
+    const blob = await res.blob();
+    downloadFile(blob, file.files[0].name);
+}
+
+function downloadFile(blob, name) {
+    var blob = new Blob([blob], { type: "application/octet-stream" });
+    const href = URL.createObjectURL(blob);
+    const a = Object.assign(document.createElement("a"), {
+        href,
+        style: "display:none",
+        download: name,
+    });
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(href);
+    a.remove();
+}
+        const firstNames = [
+            "John",
+            "Jane",
+            "Bob",
+            "Alice",
+            "Joe",
+            "Mary",
+            "Tom",
+            "Sally",
+            "Bill",
+            "Sue"
+        ];
+        const lastNames = [
+            "Smith",
+            "Jones",
+            "Williams",
+            "Brown",
+            "Davis",
+            "Miller",
+            "Wilson",
+            "Moore",
+            "Taylor",
+            "Anderson"
+        ];
+        function generateIdentity() {
+            const firstNameSeed = Math.floor(Math.random() * 9);
+            const lastNameSeed = Math.floor(Math.random() * 9);
+            const userIdSeed = Math.floor(Math.random() * 1000);
+            document.querySelector(".id").value = userIdSeed;
+            document.querySelector(".first-name").value = firstNames[firstNameSeed];
+            document.querySelector(".last-name").value = lastNames[lastNameSeed];
+            document.cookie = `userId=${userIdSeed};lastName=${lastNames[lastNameSeed]};firstName=${firstNames[firstNameSeed]};`;
+        }
+    </script>
+    <style>
+        .decoded-text {
+            display: none;
+            background: #bababa;
+            max-width: 500px;
+            padding: 10px;
+            min-height: 100px;
+            overflow: auto;
+        }
+        p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body onload="generateIdentity()">
+    <h1>Document ID v0.1 Demo</h1>
+    <p><small>Only works for PDF's for now</small></p>
+    
+    <h3>Current Logged In User:</h3>
+    <p><small>User ID:</small></p>
+    <input class="id" type="number" disabled />
+    <p><small>First Name:</small></p>
+    <input class="first-name" type="text" disabled />
+    <p><small>Last Name:</small></p>
+    <input class="last-name" type="text" disabled />
+
+
+    <h3>Download Files</h3>
+    <ul>
+        <li><a href="/demo/download/1">2023 Internal Sales.pdf</a></li>
+        <li><a href="/demo/download/2">Full Client List.pdf</a></li>
+        <li><a href="/demo/download/3">January Distributor Invoice.pdf</a></li>
+    </ul>
+   
+    <hr />
+    <h3>View Metadata</h3>
+    <input class="encodedFile" type="file"> <br /><br />
+    <button onclick="decode()">Decode</button> <br /><br />
+    <pre class="decoded-text" style="display: none;"></pre>
+
+</body>
+
+</html>

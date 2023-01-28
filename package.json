@@ -1,12 +1,33 @@
 {
-  "devDependencies": {
-    "chai": "^4.3.7",
-    "mocha": "^10.2.0",
-    "nodemon": "^2.0.20"
-  },
-  "dependencies": {
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-fileupload": "^1.4.0"
-  }
+    "name": "document-id",
+    "description": "A web application and standalone API that lets you upload a PDF file and share it with others. Each downloaded PDF file will contain an invisible bit of metadata watermarked into the document that identifies who the person that downloaded the PDF is. You may also upload a PDF to view the invisible metadata that may exist on it.",
+    "version": "0.0.1",
+    "main": "index.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "mocha",
+        "dev": "nodemon index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/joshterrill/document-id.git"
+    },
+    "author": "Josh Terrill",
+    "private": true,
+    "bugs": {
+        "url": "https://github.com/joshterrill/document-id/issues"
+    },
+    "homepage": "https://github.com/joshterrill/document-id#readme",
+    "devDependencies": {
+        "chai": "^4.3.7",
+        "mocha": "^10.2.0",
+        "nodemon": "^2.0.20"
+    },
+    "dependencies": {
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-fileupload": "^1.4.0"
+    }
 }

@@ -3,3 +3,4 @@ node_modules/
 /tmp/*.pdf
 /tmp/tmp-*
 .env
+IDEAS.md
