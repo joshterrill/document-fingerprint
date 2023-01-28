@@ -74,7 +74,9 @@ function downloadFile(blob, name) {
             document.querySelector(".id").value = userIdSeed;
             document.querySelector(".first-name").value = firstNames[firstNameSeed];
             document.querySelector(".last-name").value = lastNames[lastNameSeed];
-            document.cookie = `userId=${userIdSeed};lastName=${lastNames[lastNameSeed]};firstName=${firstNames[firstNameSeed]};`;
+            document.cookie = `userId=${userIdSeed}`;
+            document.cookie = `lastName=${lastNames[lastNameSeed]}`;
+            document.cookie = `firstName=${firstNames[firstNameSeed]}`;
         }
     </script>
     <style>
