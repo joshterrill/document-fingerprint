@@ -7,6 +7,8 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
+app.use(express.static('views'));
+
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
     safeFileNames: true,
@@ -33,4 +35,4 @@ app.post('/decode', (req, res) => {
     res.send(decoded);
 });
 
-app.listen(port, () => console.log(`listening on port ${port}`));
+app.listen(port, () => console.log(`listening on port http://localhost:${port}`));

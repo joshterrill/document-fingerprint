@@ -1,7 +1,18 @@
 ﻿require('dotenv').config();
-const fs = require('fs');
 const crypto = require('crypto');
-const CONSTANTS = require('./constants');
+// const CONSTANTS = require('./constants');
+const CONSTANTS = {
+    EOF: '2525454f46',
+    END_OBJ: '656e646f626a',
+    HEX_ID: '0ddb4115',
+}
+
+const process = {
+    env: {
+        SECURITY_KEY: '9f32f8dcc90eb1e674ff7ef8003f4076dc018690a89cd6f83d8af15a4e68b610',
+        ALGORITHM: 'aes-256-cbc',
+    },
+}
 
 const initVector = crypto.randomBytes(16);
 
@@ -29,7 +40,7 @@ function decryptText(encryptedMessage) {
 
 function addIDToFile(file, message) {
     // const file = fs.readFileSync('file.pdf', { encoding: 'hex' });
-    const fileBuffer = file.data.toString('hex');
+    const fileBuffer = file;
     const eofIndex = fileBuffer.indexOf(CONSTANTS.EOF);
     const endObjIndex = fileBuffer.lastIndexOf(CONSTANTS.END_OBJ, eofIndex) + CONSTANTS.END_OBJ.length;
     const insertedText = utf8ToHex(message);
@@ -38,7 +49,6 @@ function addIDToFile(file, message) {
 
     return newFileBuffer;
 }
-
 
 function readIDFromFile(file) {
     const fileBuffer = file.data.toString('hex');
@@ -49,8 +59,14 @@ function readIDFromFile(file) {
     return decoded;
 }
 
-// addIDToFile();
-// readIDFromFile();
+function getFileHash(fileBuffer) {
+    const hashSum = crypto.createHash('sha256');
+    hashSum.update(fileBuffer);
+    
+    const hex = hashSum.digest('hex');
+    return hex;
+}
+
 module.exports = {
     addIDToFile,
     readIDFromFile,

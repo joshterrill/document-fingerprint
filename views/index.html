@@ -1,33 +1,34 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <script src="bundle.js"></script>
     <script>
-        async function decode() {
-            const file = document.querySelector(".encodedFile");
-            const formData = new FormData();
-            formData.append("file", file.files[0]);
-            const res = await fetch("/decode", {
-                method: "POST",
-                body: formData
-            });
-            const json = await res.text();
-            const decodedText = document.querySelector(".decoded-text");
-            decodedText.style.display = "block";
-            decodedText.innerText = json;
-        }
-        async function encode() {
-            const file = document.querySelector(".originalFile");
-            const message = document.querySelector(".message");
-            const formData = new FormData();
-            formData.append("file", file.files[0]);
-            formData.append("message", message.value);
-            const res = await fetch("/upload", {
-                method: "POST",
-                body: formData
-            });
-            const blob = await res.blob();
-            downloadFile(blob, file.files[0].name);
-        }
+        // async function decode() {
+        //     const file = document.querySelector(".encodedFile");
+        //     const formData = new FormData();
+        //     formData.append("file", file.files[0]);
+        //     const res = await fetch("/decode", {
+        //         method: "POST",
+        //         body: formData
+        //     });
+        //     const json = await res.text();
+        //     const decodedText = document.querySelector(".decoded-text");
+        //     decodedText.style.display = "block";
+        //     decodedText.innerText = json;
+        // }
+        // async function encode() {
+        //     const file = document.querySelector(".originalFile");
+        //     const message = document.querySelector(".message");
+        //     const formData = new FormData();
+        //     formData.append("file", file.files[0]);
+        //     formData.append("message", message.value);
+        //     const res = await fetch("/upload", {
+        //         method: "POST",
+        //         body: formData
+        //     });
+        //     const blob = await res.blob();
+        //     downloadFile(blob, file.files[0].name);
+        // }
 
         function downloadFile(blob, name) {
             var blob = new Blob([blob], { type: "application/octet-stream" });
@@ -42,6 +43,35 @@
             URL.revokeObjectURL(href);
             a.remove();
         }
+
+        function utf8ToHex(str) {
+            return Array.from(str).map(c => 
+                c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16) : 
+                encodeURIComponent(c).replace(/\%/g,'').toLowerCase()
+            ).join('');
+        }
+
+
+        async function encode() {
+            const file = document.querySelector(".originalFile").files[0];
+            const buffer = await file.arrayBuffer();
+            const array = new Uint8Array(buffer);
+            const binaryString = String.fromCharCode.apply(null, array);
+            const hexa = utf8ToHex(binaryString);
+            // console.log(buffer);
+            console.log(binaryString);
+            console.log(hexa);
+            // console.log(binaryString.toString('hex'));
+            // console.log(array.toString('hex'));
+            const message = document.querySelector(".message");
+            const res = docId.addIDToFile(hexa, message);
+            
+            console.log(res);
+            const binaryStringTwo = String.fromCharCode.apply(null, res);
+
+            downloadFile(binaryStringTwo, file.name);
+        }
+
     </script>
     <style>
         .decoded-text {
