@@ -1,4 +1,4 @@
-# Document Metadata ID (WIP)
+# Document Fingerprint (WIP)
 
 Demo can be found here: https://documentid.dangerous.dev/
 
